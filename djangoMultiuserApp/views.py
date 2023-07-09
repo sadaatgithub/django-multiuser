@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .serializers import StudentRegistrationSerializer,TeacherRegistrationSerializer,\
+from .serializers import DoctorRegistrationSerializer,PatientRegistrationSerializer,\
                          UserProfileSerializer, UserChangePasswordSerializer,UserLoginSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -20,10 +20,10 @@ def get_tokens_for_user(user):
 class UserRegistrationView(APIView):
     def post(self,request,format=None):
         role = request.data.get('role')
-        if role == 'ST':
-            serializer = StudentRegistrationSerializer(data=request.data)
-        elif role == 'TE':
-            serializer = TeacherRegistrationSerializer(data=request.data)
+        if role == 'DOCTOR':
+            serializer = DoctorRegistrationSerializer(data=request.data)
+        elif role == 'PATIENT':
+            serializer = PatientRegistrationSerializer(data=request.data)
         else:
             return Response({'error':'Invalid Role'})
         

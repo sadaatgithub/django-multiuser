@@ -1,22 +1,22 @@
-from .models import UserAccount, Student, Teacher
+from .models import UserAccount, Doctor, Patient
 from rest_framework import serializers
 
 
 
-class StudentRegistrationSerializer(serializers.ModelSerializer):
+class DoctorRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Student
+        model = Doctor
         fields = ['email','password','role']
         extra_kwargs={
             'password':{'write_only':True}
         }
 
         def create(self,validate_data):
-            return Student.objects.create_user(**validate_data)
+            return Doctor.objects.create_user(**validate_data)
     
-class TeacherRegistrationSerializer(serializers.ModelSerializer):
+class PatientRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Teacher
+        model = Patient
         fields = ['email','password','role']
         extra_kwargs={
             'password':{'write_only':True}
@@ -24,7 +24,7 @@ class TeacherRegistrationSerializer(serializers.ModelSerializer):
 
         def create(self,validate_data):
             print(validate_data)
-            return Teacher.objects.create_user(**validate_data)
+            return Patient.objects.create_user(**validate_data)
         
 
 class UserProfileSerializer(serializers.ModelSerializer):
