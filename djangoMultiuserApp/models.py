@@ -62,8 +62,6 @@ class UserAccount(AbstractBaseUser):
     def save(self,*args,**kwargs):
         if not self.role or self.role == None:
             self.role = UserAccount.Types.ADMIN
-        if self._state.adding:  # Only set the password when creating a new instance
-            self.password = make_password(self.password)
         return super().save(*args,**kwargs)
 
 
@@ -93,6 +91,8 @@ class Doctor(UserAccount):
     def save(self , *args , **kwargs):
         self.role = UserAccount.Types.DOCTOR
         self.is_doctor = True
+        if self._state.adding:  # Only set the password when creating a new instance
+            self.password = make_password(self.password)
         return super().save(*args , **kwargs)
 
 class PatientManager(models.Manager):
@@ -122,6 +122,8 @@ class Patient(UserAccount):
     def save(self  , *args , **kwargs):
         self.role = UserAccount.Types.PATIENT
         self.is_patient = True
+        if self._state.adding:  # Only set the password when creating a new instance
+            self.password = make_password(self.password)
         return super().save(*args , **kwargs)
 
 class DoctorProfile(models.Model):
