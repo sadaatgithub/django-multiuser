@@ -7,5 +7,5 @@ urlpatterns = [
     path('auth/profile/', UserProfileView.as_view(),name='profile'),
     path('auth/login/', UserLoginView.as_view(),name="login"),
     path('auth/set_password/', UserChangePasswordView.as_view(), name="set-password"),
-    path('auth/', include('djoser.urls.jwt')),
+    # path('auth/', include('djoser.urls.jwt')),
 ]

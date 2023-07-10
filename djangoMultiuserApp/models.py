@@ -34,6 +34,7 @@ class UserAccountManager(BaseUserManager):
 
 class UserAccount(AbstractBaseUser):
     class Types(models.TextChoices):
+        
         STUDENT='ST', 'Student'
         TEACHER ='TE','Teacher'
     role = models.CharField(max_length=8, choices=Types.choices, default=Types.TEACHER)
@@ -61,8 +62,8 @@ class UserAccount(AbstractBaseUser):
     def save(self,*args,**kwargs):
         if not self.role or self.role == None:
             self.role = UserAccount.Types.TEACHER
-        if self._state.adding:  # Only set the password when creating a new instance
-            self.password = make_password(self.password)
+        # if self._state.adding:  # Only set the password when creating a new instance
+        #     self.password = make_password(self.password)
         return super().save(*args,**kwargs)
 
 
@@ -92,6 +93,8 @@ class Student(UserAccount):
     def save(self , *args , **kwargs):
         self.role = UserAccount.Types.STUDENT
         self.is_student = True
+        if self._state.adding:  # Only set the password when creating a new instance
+            self.password = make_password(self.password)
         return super().save(*args , **kwargs)
 
 class TeacherManager(models.Manager):
@@ -121,6 +124,8 @@ class Teacher(UserAccount):
     def save(self  , *args , **kwargs):
         self.role = UserAccount.Types.TEACHER
         self.is_teacher = True
+        if self._state.adding:  # Only set the password when creating a new instance
+            self.password = make_password(self.password)
         return super().save(*args , **kwargs)
 
 class StudentProfile(models.Model):
@@ -166,7 +171,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 #     def save(self, *args, **kwargs):
 #         if not self.pk:
 #             self.role = self.base_role
-#             return super().save(*args, **kwargs)
+#         if self._state.adding:  # Only set the password when creating a new instance
+#             self.password = make_password(self.password)
+
+#         return super().save(*args, **kwargs)
+#     # def save(self,*args,**kwargs):
+#     #     if not self.role or self.role == None:
+#     #         self.role = UserAccount.Types.TEACHER
+#     #     if self._state.adding:  # Only set the password when creating a new instance
+#     #         self.password = make_password(self.password)
+#         # return super().save(*args,**kwargs)
 #     def __str__(self):
 #         return str(self.email)
 
